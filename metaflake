@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-nix develop github:flmarrero/metaflakes?dir=$1 --no-write-lock-file
+nix develop github:flmarrero/metaflakes#$1 --no-write-lock-file
