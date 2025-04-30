@@ -30,6 +30,7 @@
                 ply
               ]))
               codespell
+              perl
 
               # static analysis
               flawfinder
