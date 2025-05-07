@@ -14,7 +14,6 @@ in
 pkgs.mkShell {
   name = "kernel-dev-shell";
   hardeningDisable = [ "all" ];
-  LLVM = 1;
 
   buildInputs = with pkgs; [
     git
@@ -24,6 +23,7 @@ pkgs.mkShell {
     ]))
 
     gdb
+    gcc
     qemu
     pahole
     flex
@@ -36,10 +36,10 @@ pkgs.mkShell {
 
     # LLVM=1
     cc.cc
-    llvmPackages.bintools-unwrapped
+    llvmPackages.bintools
     llvmPackages.lld
-
     clang-tools
+
     # static analysis
     codespell
     flawfinder
@@ -48,4 +48,21 @@ pkgs.mkShell {
     valgrind
     aflplusplus
   ];
+  shellHook = ''
+        echo ""
+        echo "Happy kernel hacking!"
+        echo ""
+
+        export CC=${cc.cc}/bin/clang
+        export LD=${pkgs.llvmPackages.lld}/bin/ld.lld
+        export AR=${pkgs.llvmPackages.bintools}/bin/llvm-ar
+        export STRIP=${pkgs.llvmPackages.bintools}/bin/llvm-strip
+        export OBJCOPY=${pkgs.llvmPackages.bintools}/bin/llvm-objcopy
+        export OBJDUMP=${pkgs.llvmPackages.bintools}/bin/llvm-objdump
+        export READELF=${pkgs.llvmPackages.bintools}/bin/llvm-readelf
+        
+        export HOSTCC=${cc.cc}/bin/clang
+        export HOSTCXX=${cc.cc}/bin/clang++
+        export HOSTLD=${pkgs.llvmPackages.lld}/bin/ld.lld
+ '';
 }
