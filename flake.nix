@@ -27,6 +27,7 @@
         rust = import ./rust/default.nix { inherit system nixpkgs fenix rust-overlay; };
         kernel = import ./kernel/default.nix { inherit system nixpkgs; };
         security = import ./security/default.nix { inherit system nixpkgs; };
+        python = import ./python/default.nix { inherit system nixpkgs; };
       };
     });
 }
