@@ -25,6 +25,7 @@ pkgs.mkShell {
     gdb
     gcc
     qemu
+    ncurses
     pahole
     flex
     bison

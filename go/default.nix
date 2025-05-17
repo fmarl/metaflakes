@@ -4,8 +4,14 @@ let
 in
 pkgs.mkShell {
   name = "go-dev-shell";
-  buildInputs = [ pkgs.go pkgs.gopls pkgs.git ];
+  
+  buildInputs = with pkgs; [ 
+    pkgs.go 
+    pkgs.gopls 
+    pkgs.golangci-lint
+  ];
+
   shellHook = ''
-    echo "Willkommen in der Go Entwicklungsumgebung!"
+    echo "Let's GO!"
   '';
 }
