@@ -28,7 +28,7 @@
         kernel = import ./kernel/default.nix { inherit system nixpkgs; };
         security = import ./security/default.nix { inherit system nixpkgs; };
         python = import ./python/default.nix { inherit system nixpkgs; };
-        ebpf = import ./eBPF/default.nix { inherit system nixpkgs; };
+        ebpf = import ./ebpf/default.nix { inherit system nixpkgs; };
       };
     });
 }
