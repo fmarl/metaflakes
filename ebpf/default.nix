@@ -11,6 +11,7 @@ pkgs.mkShell {
     gnumake
     pkg-config
     bpftools
+    bpftrace
     libbpf
     libelf
     elfutils
