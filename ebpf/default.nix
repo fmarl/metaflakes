@@ -5,8 +5,8 @@ in
 pkgs.mkShell {
   name = "ebpf-dev-shell";
   buildInputs = with pkgs; [
-    llvmPackages.clang
     clang-tools
+    llvmPackages.clang
     gcc
     gnumake
     pkg-config
