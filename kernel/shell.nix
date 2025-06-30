@@ -10,17 +10,13 @@ let
       echo " -resource-dir=${pkgs.llvmPackages.libclang.lib}/lib/clang/${clangVersion}" >> $out/nix-support/cc-cflags
     '';
   };
-in
-pkgs.mkShell {
+in pkgs.mkShell {
   name = "kernel-dev-shell";
   hardeningDisable = [ "all" ];
 
   buildInputs = with pkgs; [
     git
-    (python3.withPackages (ps: with ps; [
-      GitPython
-      ply
-    ]))
+    (python3.withPackages (ps: with ps; [ GitPython ply ]))
 
     gdb
     gcc
@@ -50,20 +46,20 @@ pkgs.mkShell {
     aflplusplus
   ];
   shellHook = ''
-        echo ""
-        echo "Happy kernel hacking!"
-        echo ""
+    echo ""
+    echo "Happy kernel hacking!"
+    echo ""
 
-        export CC=${cc.cc}/bin/clang
-        export LD=${pkgs.llvmPackages.lld}/bin/ld.lld
-        export AR=${pkgs.llvmPackages.bintools}/bin/llvm-ar
-        export STRIP=${pkgs.llvmPackages.bintools}/bin/llvm-strip
-        export OBJCOPY=${pkgs.llvmPackages.bintools}/bin/llvm-objcopy
-        export OBJDUMP=${pkgs.llvmPackages.bintools}/bin/llvm-objdump
-        export READELF=${pkgs.llvmPackages.bintools}/bin/llvm-readelf
-        
-        export HOSTCC=${cc.cc}/bin/clang
-        export HOSTCXX=${cc.cc}/bin/clang++
-        export HOSTLD=${pkgs.llvmPackages.lld}/bin/ld.lld
- '';
+    export CC=${cc.cc}/bin/clang
+    export LD=${pkgs.llvmPackages.lld}/bin/ld.lld
+    export AR=${pkgs.llvmPackages.bintools}/bin/llvm-ar
+    export STRIP=${pkgs.llvmPackages.bintools}/bin/llvm-strip
+    export OBJCOPY=${pkgs.llvmPackages.bintools}/bin/llvm-objcopy
+    export OBJDUMP=${pkgs.llvmPackages.bintools}/bin/llvm-objdump
+    export READELF=${pkgs.llvmPackages.bintools}/bin/llvm-readelf
+
+    export HOSTCC=${cc.cc}/bin/clang
+    export HOSTCXX=${cc.cc}/bin/clang++
+    export HOSTLD=${pkgs.llvmPackages.lld}/bin/ld.lld
+  '';
 }
