@@ -21,8 +21,7 @@
         fenix = inputs.fenix;
         rust-overlay = inputs.rust-overlay;
       in {
-        devShells = {
-          default = import ./shell.nix { inherit system nixpkgs; };
-        };
+        devShells.default =
+          import ./shell.nix { inherit system nixpkgs fenix rust-overlay; };
       });
 }

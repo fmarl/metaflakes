@@ -11,10 +11,12 @@ let
     '';
   };
 in pkgs.mkShell {
-  name = "kernel-dev-shell";
   hardeningDisable = [ "all" ];
 
   buildInputs = with pkgs; [
+    nixfmt
+    nil
+    
     git
     (python3.withPackages (ps: with ps; [ GitPython ply ]))
 

@@ -17,38 +17,73 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }@inputs:
-    let
-      fenix = inputs.fenix;
-      rust-overlay = inputs.rust-overlay;
-    in {
-      devShells = flake-utils.lib.eachDefaultSystem (system: {
-        default = let pkgs = import nixpkgs { inherit system; };
-        in pkgs.mkShell { buildInputs = with pkgs; [ nixfmt ]; };
-        go = import ./go/shell.nix { inherit system nixpkgs; };
-        rust = import ./rust/shell.nix {
-          inherit system nixpkgs fenix rust-overlay;
-        };
-        kernel = import ./kernel/shell.nix { inherit system nixpkgs; };
-        security = import ./security/shell.nix { inherit system nixpkgs; };
-        python = import ./python/shell.nix { inherit system nixpkgs; };
-        ebpf = import ./ebpf/shell.nix { inherit system nixpkgs; };
-      });
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        fenix = inputs.fenix;
+        rust-overlay = inputs.rust-overlay;
+      in {
+        devShells = {
+          default = let pkgs = import nixpkgs { inherit system; };
+          in pkgs.mkShell { buildInputs = with pkgs; [ nixfmt nil ]; };
 
-      templates = {
-        go = {
-          path = ./go;
-          description = "Go template";
-        };
+          go = import ./go/shell.nix { inherit system nixpkgs; };
 
-        rust = {
-          path = ./rust;
-          description = "Rust template using fenix";
-        };
+          rust = import ./rust/shell.nix {
+            inherit system nixpkgs fenix rust-overlay;
+          };
 
-        python = {
-          path = ./python;
-          description = "Python template";
+          agda = import ./agda/shell.nix { inherit system nixpkgs; };
+
+          ocaml = import ./ocaml/shell.nix { inherit system nixpkgs; };
+
+          haskell = import ./haskell/shell.nix { inherit system nixpkgs; };
+
+          scala = import ./scala/shell.nix { inherit system nixpkgs; };
+
+          python = import ./python/shell.nix { inherit system nixpkgs; };
+
+          kernel = import ./kernel/shell.nix { inherit system nixpkgs; };
+
+          security = import ./security/shell.nix { inherit system nixpkgs; };
+
+          ebpf = import ./ebpf/shell.nix { inherit system nixpkgs; };
+        };
+      }) // {
+        templates = {
+          go = {
+            path = ./go;
+            description = "Go template";
+          };
+
+          rust = {
+            path = ./rust;
+            description = "Rust template using fenix";
+          };
+
+          python = {
+            path = ./python;
+            description = "Python template";
+          };
+
+          scala = {
+            path = ./scala;
+            description = "Scala template using the sbt buildsystem";
+          };
+
+          haskell = {
+            path = ./haskell;
+            description = "Haskell template using haskellNix and stack";
+          };
+
+          ocaml = {
+            path = ./ocaml;
+            description = "OCaml template using the dune buildsystem";
+          };
+
+          agda = {
+            path = ./agda;
+            description = "Agda template using the default agda package";
+          };
         };
       };
-    };
 }

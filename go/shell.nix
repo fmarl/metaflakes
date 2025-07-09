@@ -2,17 +2,17 @@
 let pkgs = import nixpkgs { inherit system; };
 in pkgs.mkShell {
   CGO_ENABLED = 0;
-  name = "go-dev-shell";
 
   buildInputs = with pkgs; [
-    pkgs.nixfmt
-    pkgs.go
-    pkgs.gopls
-    pkgs.golangci-lint
-    pkgs.delve
+    nixfmt
+    nil
+    go
+    gopls
+    gotools
+    go-tools
+    gopkgs
+    golangci-lint
+    delve
+    gotests
   ];
-
-  shellHook = ''
-    echo "Let's GO!"
-  '';
 }

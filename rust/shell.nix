@@ -17,6 +17,5 @@ let
     "llvm-tools-preview"
   ]);
 in pkgs.mkShell {
-  name = "rust-dev-shell";
-  buildInputs = with pkgs; [ fenix-toolchain rust-analyzer ];
+  buildInputs = with pkgs; [ nixfmt nil fenix-toolchain rust-analyzer ];
 }
