@@ -32,6 +32,8 @@
             inherit system nixpkgs fenix rust-overlay;
           };
 
+          clojure = import ./clojure/shell.nix { inherit system nixpkgs; };
+
           agda = import ./agda/shell.nix { inherit system nixpkgs; };
 
           ocaml = import ./ocaml/shell.nix { inherit system nixpkgs; };
@@ -78,6 +80,11 @@
           ocaml = {
             path = ./ocaml;
             description = "OCaml template using the dune buildsystem";
+          };
+
+          clojure = {
+            path = ./clojure;
+            description = "Clojure template optimized for vscode";
           };
 
           agda = {
