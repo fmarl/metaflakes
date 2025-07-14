@@ -6,6 +6,8 @@ in pkgs.mkShell {
   packages = [
     pkgs.nixfmt
     pkgs.nil
+    pkgs.ocaml
+    pkgs.dune_3
     pkgs.ocamlformat
     pkgs.fswatch
     opkgs.odoc
