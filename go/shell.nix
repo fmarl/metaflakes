@@ -1,18 +1,17 @@
-{ system, nixpkgs }:
-let pkgs = import nixpkgs { inherit system; };
+{ system, nixpkgs, code-nix }:
+let
+  pkgs = import nixpkgs { inherit system; };
+  code = code-nix.packages.${system}.default {
+    profiles.nix.enable = true;
+    profiles.go.enable = true;
+  };
 in pkgs.mkShell {
   CGO_ENABLED = 0;
 
   buildInputs = with pkgs; [
     nixfmt
     nil
-    go
-    gopls
-    gotools
-    go-tools
-    gopkgs
-    golangci-lint
-    delve
-    gotests
+    code.editor
+    code.tooling
   ];
 }

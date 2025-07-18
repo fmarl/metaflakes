@@ -14,6 +14,16 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    code-nix = {
+      url = "github:fmarl/code-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        extensions.follows = "nix-vscode-extensions";
+      };
+    };
+
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }@inputs:
@@ -21,10 +31,15 @@
       let
         fenix = inputs.fenix;
         rust-overlay = inputs.rust-overlay;
+        code = inputs.code-nix.packages.${system}.default {
+          profiles.nix.enable = true;
+        };
       in {
         devShells = {
           default = let pkgs = import nixpkgs { inherit system; };
-          in pkgs.mkShell { buildInputs = with pkgs; [ nixfmt nil ]; };
+          in pkgs.mkShell {
+            buildInputs = with pkgs; [ code.editor code.tooling ];
+          };
 
           go = import ./go/shell.nix { inherit system nixpkgs; };
 

@@ -1,4 +1,4 @@
-{ system, nixpkgs, fenix, rust-overlay }:
+{ system, nixpkgs, fenix, rust-overlay, code-nix }:
 let
   pkgs = import nixpkgs {
     inherit system;
@@ -16,6 +16,16 @@ let
     "rustfmt"
     "llvm-tools-preview"
   ]);
+
+  code = code-nix.packages.${system}.default {
+    profiles.nix.enable = true;
+    profiles.clojure.enable = true;
+  };
 in pkgs.mkShell {
-  buildInputs = with pkgs; [ nixfmt nil fenix-toolchain rust-analyzer ];
+  buildInputs = with pkgs; [
+    code.editor
+    code.tooling
+    fenix-toolchain
+    rust-analyzer
+  ];
 }
