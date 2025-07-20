@@ -30,6 +30,7 @@
       self,
       nixpkgs,
       flake-utils,
+      code-nix,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (
@@ -37,7 +38,7 @@
       let
         fenix = inputs.fenix;
         rust-overlay = inputs.rust-overlay;
-        code = inputs.code-nix.packages.${system}.default {
+        code = code-nix.packages.${system}.default {
           profiles.nix.enable = true;
         };
       in
@@ -54,7 +55,7 @@
               ];
             };
 
-          go = import ./go/shell.nix { inherit system nixpkgs; };
+          go = import ./go/shell.nix { inherit system nixpkgs code-nix; };
 
           rust = import ./rust/shell.nix {
             inherit
@@ -62,10 +63,11 @@
               nixpkgs
               fenix
               rust-overlay
+              code-nix
               ;
           };
 
-          clojure = import ./clojure/shell.nix { inherit system nixpkgs; };
+          clojure = import ./clojure/shell.nix { inherit system nixpkgs code-nix; };
 
           agda = import ./agda/shell.nix { inherit system nixpkgs; };
 
