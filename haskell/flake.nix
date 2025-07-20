@@ -65,6 +65,7 @@
             nixpkgs
             ghc
             libDeps
+            code-nix
             ;
         };
         packages.default = app;
