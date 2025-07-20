@@ -15,7 +15,14 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { self, nixpkgs, flake-utils, code-nix }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      code-nix,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (system: {
       devShells.default = import ./shell.nix { inherit system nixpkgs code-nix; };
     });

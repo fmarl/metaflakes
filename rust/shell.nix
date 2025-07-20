@@ -1,4 +1,10 @@
-{ system, nixpkgs, fenix, rust-overlay, code-nix }:
+{
+  system,
+  nixpkgs,
+  fenix,
+  rust-overlay,
+  code-nix,
+}:
 let
   pkgs = import nixpkgs {
     inherit system;
@@ -7,21 +13,24 @@ let
 
   fenix-channel = fenix.packages.${system}.latest;
 
-  fenix-toolchain = (fenix-channel.withComponents [
-    "rustc"
-    "cargo"
-    "clippy"
-    "rust-analysis"
-    "rust-src"
-    "rustfmt"
-    "llvm-tools-preview"
-  ]);
+  fenix-toolchain = (
+    fenix-channel.withComponents [
+      "rustc"
+      "cargo"
+      "clippy"
+      "rust-analysis"
+      "rust-src"
+      "rustfmt"
+      "llvm-tools-preview"
+    ]
+  );
 
   code = code-nix.packages.${system}.default {
     profiles.nix.enable = true;
-    profiles.clojure.enable = true;
+    profiles.rust.enable = true;
   };
-in pkgs.mkShell {
+in
+pkgs.mkShell {
   buildInputs = with pkgs; [
     code.editor
     code.tooling

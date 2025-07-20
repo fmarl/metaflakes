@@ -1,6 +1,8 @@
 { system, nixpkgs }:
-let pkgs = import nixpkgs { inherit system; };
-in pkgs.mkShell {
+let
+  pkgs = import nixpkgs { inherit system; };
+in
+pkgs.mkShell {
   name = "kernel-dev-shell";
   buildInputs = with pkgs; [
     openvpn

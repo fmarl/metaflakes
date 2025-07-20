@@ -6,8 +6,15 @@
     nix-filter.url = "github:numtide/nix-filter";
   };
 
-  outputs = { self, nixpkgs, flake-utils, nix-filter }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      nix-filter,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
         opkgs = pkgs.ocamlPackages;
@@ -31,7 +38,8 @@
             include = [ (nix-filter.lib.matchExt "nix") ];
           };
         };
-      in {
+      in
+      {
         packages.default = opkgs.buildDunePackage {
           pname = "hello";
           version = "0.1.0";
@@ -46,67 +54,88 @@
         };
 
         checks = {
-          hello = let
-            patchDuneCommand =
-              let subcmds = [ "build" "test" "runtest" "install" ];
-              in lib.replaceStrings
-              (lib.lists.map (subcmd: "dune ${subcmd}") subcmds)
-              (lib.lists.map (subcmd: "dune ${subcmd} --display=short")
-                subcmds);
+          hello =
+            let
+              patchDuneCommand =
+                let
+                  subcmds = [
+                    "build"
+                    "test"
+                    "runtest"
+                    "install"
+                  ];
+                in
+                lib.replaceStrings (lib.lists.map (subcmd: "dune ${subcmd}") subcmds) (
+                  lib.lists.map (subcmd: "dune ${subcmd} --display=short") subcmds
+                );
 
-          in self.packages.${system}.hello.overrideAttrs (oldAttrs: {
-            name = "check-${oldAttrs.name}";
-            doCheck = true;
-            buildPhase = patchDuneCommand oldAttrs.buildPhase;
-            checkPhase = patchDuneCommand oldAttrs.checkPhase;
-            # skip installation (this will be tested in the `hello-app` check)
-            installPhase = "touch $out";
-          });
+            in
+            self.packages.${system}.hello.overrideAttrs (oldAttrs: {
+              name = "check-${oldAttrs.name}";
+              doCheck = true;
+              buildPhase = patchDuneCommand oldAttrs.buildPhase;
+              checkPhase = patchDuneCommand oldAttrs.checkPhase;
+              # skip installation (this will be tested in the `hello-app` check)
+              installPhase = "touch $out";
+            });
 
           # Check Dune and OCaml formatting
-          dune-fmt = pkgs.runCommand "check-dune-fmt" {
-            nativeBuildInputs = [
-              opkgs.dune_3
-              opkgs.ocaml
-              pkgs.ocamlformat
-            ];
-          } ''
-            echo "checking dune and ocaml formatting"
-            dune build \
-              --display=short \
-              --no-print-directory \
-              --root="${sources.ocaml}" \
-              --build-dir="$(pwd)/_build" \
-              @fmt
-            touch $out
-          '';
+          dune-fmt =
+            pkgs.runCommand "check-dune-fmt"
+              {
+                nativeBuildInputs = [
+                  opkgs.dune_3
+                  opkgs.ocaml
+                  pkgs.ocamlformat
+                ];
+              }
+              ''
+                echo "checking dune and ocaml formatting"
+                dune build \
+                  --display=short \
+                  --no-print-directory \
+                  --root="${sources.ocaml}" \
+                  --build-dir="$(pwd)/_build" \
+                  @fmt
+                touch $out
+              '';
 
           # Check documentation generation
-          dune-doc = pkgs.runCommand "check-dune-doc" {
-            ODOC_WARN_ERROR = "true";
-            nativeBuildInputs =
-              [ opkgs.dune_3 opkgs.ocaml opkgs.odoc ];
-          } ''
-            echo "checking ocaml documentation"
-            dune build \
-              --display=short \
-              --no-print-directory \
-              --root="${sources.ocaml}" \
-              --build-dir="$(pwd)/_build" \
-              @doc
-            touch $out
-          '';
+          dune-doc =
+            pkgs.runCommand "check-dune-doc"
+              {
+                ODOC_WARN_ERROR = "true";
+                nativeBuildInputs = [
+                  opkgs.dune_3
+                  opkgs.ocaml
+                  opkgs.odoc
+                ];
+              }
+              ''
+                echo "checking ocaml documentation"
+                dune build \
+                  --display=short \
+                  --no-print-directory \
+                  --root="${sources.ocaml}" \
+                  --build-dir="$(pwd)/_build" \
+                  @doc
+                touch $out
+              '';
 
           # Check Nix formatting
-          nixpkgs-fmt = pkgs.runCommand "check-nixpkgs-fmt" {
-            nativeBuildInputs = [ pkgs.nixpkgs-fmt ];
-          } ''
-            echo "checking nix formatting"
-            nixpkgs-fmt --check ${sources.nix}
-            touch $out
-          '';
+          nixpkgs-fmt =
+            pkgs.runCommand "check-nixpkgs-fmt"
+              {
+                nativeBuildInputs = [ pkgs.nixpkgs-fmt ];
+              }
+              ''
+                echo "checking nix formatting"
+                nixpkgs-fmt --check ${sources.nix}
+                touch $out
+              '';
         };
 
         devShells.default = import ./shell.nix { inherit system nixpkgs; };
-      });
+      }
+    );
 }

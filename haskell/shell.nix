@@ -1,4 +1,10 @@
-{ system, nixpkgs, ghc ? "ghc984", libDeps ? [] }:
+{
+  system,
+  nixpkgs,
+  ghc ? "ghc984",
+  libDeps ? [ ],
+  code-nix,
+}:
 let
   pkgs = import nixpkgs { inherit system; };
   hpkgs = pkgs.haskell.packages."${ghc}";
@@ -20,7 +26,13 @@ let
         "
     '';
   };
-in pkgs.mkShell {
+
+  code = code-nix.packages.${system}.default {
+    profiles.nix.enable = true;
+    profiles.haskell.enable = true;
+  };
+in
+pkgs.mkShell {
   buildInputs = [
     pkgs.nixfmt
     pkgs.nil
@@ -34,6 +46,8 @@ in pkgs.mkShell {
     hpkgs.implicit-hie # auto generate LSP hie.yaml file from cabal
     hpkgs.retrie # Haskell refactoring tool
     # hpkgs.cabal-install
+    code.editor
+    code.tooling
   ];
 
   # Make external Nix C libraries like zlib known to GHC, like pkgs.haskell.lib.buildStackProject does

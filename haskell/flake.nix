@@ -1,10 +1,32 @@
 {
   description = "Haskell flake template";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    code-nix = {
+      url = "github:fmarl/code-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        extensions.follows = "nix-vscode-extensions";
+      };
+    };
+
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+  };
+
   nixConfig.sandbox = "relaxed";
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      code-nix,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -26,9 +48,7 @@
         # So if you use "ghc944", set "resolver: nightly-2023-02-14" in your stack.yaml file
         ghc = "ghc984";
 
-        libDeps = [
-          pkgs.zlib
-        ];
+        libDeps = [ pkgs.zlib ];
 
         app = pkgs.haskell.lib.buildStackProject {
           name = "myStack";
@@ -37,8 +57,17 @@
           buildInputs = libDeps;
         };
 
-      in {
-        devShells.default = import ./shell.nix { inherit system nixpkgs ghc libDeps; };
+      in
+      {
+        devShells.default = import ./shell.nix {
+          inherit
+            system
+            nixpkgs
+            ghc
+            libDeps
+            ;
+        };
         packages.default = app;
-      });
+      }
+    );
 }

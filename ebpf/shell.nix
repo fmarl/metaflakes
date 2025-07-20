@@ -1,6 +1,8 @@
 { system, nixpkgs }:
-let pkgs = import nixpkgs { inherit system; };
-in pkgs.mkShell {
+let
+  pkgs = import nixpkgs { inherit system; };
+in
+pkgs.mkShell {
   buildInputs = with pkgs; [
     clang-tools
     llvmPackages.clang

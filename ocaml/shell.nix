@@ -2,7 +2,8 @@
 let
   pkgs = import nixpkgs { inherit system; };
   opkgs = pkgs.ocamlPackages;
-in pkgs.mkShell {
+in
+pkgs.mkShell {
   packages = [
     pkgs.nixfmt
     pkgs.nil

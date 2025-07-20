@@ -1,5 +1,0 @@
-{
-  "calva.clojureLspPath": "clojure-lsp",
-  "calva.jackInEnv": {},
-  "clojure-lsp.trace.server": "verbose"
-}

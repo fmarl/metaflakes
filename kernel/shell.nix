@@ -10,15 +10,21 @@ let
       echo " -resource-dir=${pkgs.llvmPackages.libclang.lib}/lib/clang/${clangVersion}" >> $out/nix-support/cc-cflags
     '';
   };
-in pkgs.mkShell {
+in
+pkgs.mkShell {
   hardeningDisable = [ "all" ];
 
   buildInputs = with pkgs; [
     nixfmt
     nil
-    
+
     git
-    (python3.withPackages (ps: with ps; [ GitPython ply ]))
+    (python3.withPackages (
+      ps: with ps; [
+        GitPython
+        ply
+      ]
+    ))
 
     gdb
     gcc
