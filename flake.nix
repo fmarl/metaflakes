@@ -14,8 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    code-nix = {
-      url = "github:fmarl/code-nix";
+    edinix = {
+      url = "github:fmarl/edinix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         extensions.follows = "nix-vscode-extensions";
@@ -30,7 +30,7 @@
       self,
       nixpkgs,
       flake-utils,
-      code-nix,
+      edinix,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (
@@ -38,7 +38,7 @@
       let
         fenix = inputs.fenix;
         rust-overlay = inputs.rust-overlay;
-        code = code-nix.packages.${system}.default {
+        code = edinix.packages.${system}.code {
           profiles.nix.enable = true;
         };
       in
@@ -49,13 +49,13 @@
               pkgs = import nixpkgs { inherit system; };
             in
             pkgs.mkShell {
-              buildInputs = with pkgs; [
+              buildInputs = [
                 code.editor
                 code.tooling
               ];
             };
 
-          go = import ./go/shell.nix { inherit system nixpkgs code-nix; };
+          go = import ./go/shell.nix { inherit system nixpkgs edinix; };
 
           rust = import ./rust/shell.nix {
             inherit
@@ -63,11 +63,11 @@
               nixpkgs
               fenix
               rust-overlay
-              code-nix
+              edinix
               ;
           };
 
-          clojure = import ./clojure/shell.nix { inherit system nixpkgs code-nix; };
+          clojure = import ./clojure/shell.nix { inherit system nixpkgs edinix; };
 
           agda = import ./agda/shell.nix { inherit system nixpkgs; };
 

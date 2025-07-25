@@ -3,7 +3,7 @@
   nixpkgs,
   fenix,
   rust-overlay,
-  code-nix,
+  edinix,
 }:
 let
   pkgs = import nixpkgs {
@@ -25,7 +25,7 @@ let
     ]
   );
 
-  code = code-nix.packages.${system}.default {
+  code = edinix.packages.${system}.code {
     profiles.nix.enable = true;
     profiles.rust.enable = true;
   };

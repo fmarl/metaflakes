@@ -1,11 +1,11 @@
 {
   system,
   nixpkgs,
-  code-nix,
+  edinix,
 }:
 let
   pkgs = import nixpkgs { inherit system; };
-  code = code-nix.packages.${system}.default {
+  code = edinix.packages.${system}.code {
     profiles.nix.enable = true;
     profiles.go.enable = true;
   };

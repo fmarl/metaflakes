@@ -3,7 +3,7 @@
   nixpkgs,
   ghc ? "ghc984",
   libDeps ? [ ],
-  code-nix,
+  edinix,
 }:
 let
   pkgs = import nixpkgs { inherit system; };
@@ -27,7 +27,7 @@ let
     '';
   };
 
-  code = code-nix.packages.${system}.default {
+  code = edinix.packages.${system}.code {
     profiles.nix.enable = true;
     profiles.haskell.enable = true;
   };

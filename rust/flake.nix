@@ -14,8 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    code-nix = {
-      url = "github:fmarl/code-nix";
+    edinix = {
+      url = "github:fmarl/edinix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         extensions.follows = "nix-vscode-extensions";
@@ -30,7 +30,7 @@
       self,
       nixpkgs,
       flake-utils,
-      code-nix,
+      edinix,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (
@@ -46,7 +46,7 @@
             nixpkgs
             fenix
             rust-overlay
-            code-nix
+            edinix
             ;
         };
       }

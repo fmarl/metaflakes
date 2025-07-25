@@ -4,8 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    code-nix = {
-      url = "github:fmarl/code-nix";
+    edinix = {
+      url = "github:fmarl/edinix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         extensions.follows = "nix-vscode-extensions";
@@ -22,7 +22,7 @@
       self,
       nixpkgs,
       flake-utils,
-      code-nix,
+      edinix,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -65,7 +65,7 @@
             nixpkgs
             ghc
             libDeps
-            code-nix
+            edinix
             ;
         };
         packages.default = app;
