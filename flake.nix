@@ -38,7 +38,7 @@
       let
         fenix = inputs.fenix;
         rust-overlay = inputs.rust-overlay;
-        code = edinix.packages.${system}.code {
+        code = edinix.code.${system} {
           profiles.nix.enable = true;
         };
       in
