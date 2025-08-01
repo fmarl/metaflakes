@@ -1,6 +1,0 @@
-(library
- (name hello)
- (package hello))
-
-(documentation
- (package hello))

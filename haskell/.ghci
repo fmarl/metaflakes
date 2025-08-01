@@ -1,0 +1,22 @@
+:set prompt "λ> "
+:set prompt-cont "| "
+
+:set -Wall
+:set -Wno-name-shadowing
+:set -Wno-type-defaults
+:set -XOverloadedStrings
+:set -XLambdaCase
+:set -XRecordWildCards
+:set -XTupleSections
+:set -XFlexibleContexts
+
+:set +t
+:set +s
+
+:load Text.Pretty.Simple
+:def p \_ -> return ":module +Text.Pretty.Simple\n:pPrint"
+
+:set -fobject-code
+:reload
+
+:module +Debug.Trace
