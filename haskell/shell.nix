@@ -32,14 +32,19 @@ pkgs.mkShell {
   buildInputs = [
     pkgs.nixfmt
     pkgs.nil
-    hpkgs.ghc
+    pkgs.pkg-config
+
     stack-wrapped
+
+    (hpkgs.ghcWithPackages (hgpkgs: [ hgpkgs.pretty-simple ]))
     hpkgs.ormolu
     hpkgs.hlint
     hpkgs.hoogle
     hpkgs.haskell-language-server
+    hpkgs.ghcid
     hpkgs.implicit-hie
     hpkgs.retrie
+
     code.editor
     code.tooling
   ]

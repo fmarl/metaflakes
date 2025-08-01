@@ -9,12 +9,17 @@
 :set -XRecordWildCards
 :set -XTupleSections
 :set -XFlexibleContexts
+:set -XTypeApplications 
+:set -XKindSignatures
 
-:set +t
 :set +s
+:set +m
+:set +t
 
-:load Text.Pretty.Simple
-:def p \_ -> return ":module +Text.Pretty.Simple\n:pPrint"
+:set -package pretty-simple
+
+:set -fprint-explicit-foralls
+:set -interactive-print=Text.Pretty.Simple.pPrint
 
 :set -fobject-code
 :reload
