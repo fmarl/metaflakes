@@ -6,15 +6,15 @@
 
 let
   pkgs = import nixpkgs { inherit system; };
-  emacs = edinix.emacs.${system} {
+  code = edinix.packages.${system}.code {
     profiles.nix.enable = true;
-    profiles.scheme.enable = true;
+    profiles.clojure.enable = true;
   };
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    chicken  
-    emacs.editor
-    emacs.tooling
+    babashka
+    code.editor
+    code.tooling
   ];
 }

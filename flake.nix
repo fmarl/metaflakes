@@ -16,13 +16,8 @@
 
     edinix = {
       url = "github:fmarl/edinix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        extensions.follows = "nix-vscode-extensions";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs =
@@ -38,7 +33,7 @@
       let
         fenix = inputs.fenix;
         rust-overlay = inputs.rust-overlay;
-        code = edinix.code.${system} {
+        helix = edinix.helix.${system} {
           profiles.nix.enable = true;
         };
       in
@@ -50,8 +45,8 @@
             in
             pkgs.mkShell {
               buildInputs = [
-                code.editor
-                code.tooling
+                helix.editor
+                helix.tooling
               ];
             };
 
