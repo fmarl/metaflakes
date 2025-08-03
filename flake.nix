@@ -79,6 +79,8 @@
           security = import ./security/shell.nix { inherit system nixpkgs; };
 
           ebpf = import ./ebpf/shell.nix { inherit system nixpkgs; };
+
+          scheme = import ./scheme/shell.nix { inherit system nixpkgs; };
         };
       }
     )
@@ -122,6 +124,11 @@
         agda = {
           path = ./agda;
           description = "Agda template using the default agda package";
+        };
+
+        scheme = {
+          path = ./scheme;
+          description = "Scheme template using chicken as implementation";
         };
       };
     };
