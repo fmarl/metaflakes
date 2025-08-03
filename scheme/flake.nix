@@ -1,5 +1,5 @@
 {
-  description = "Scheme template flake";
+  description = "Clojure template flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
