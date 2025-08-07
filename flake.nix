@@ -72,7 +72,7 @@
 
           scala = import ./scala/shell.nix { inherit system nixpkgs; };
 
-          python = import ./python/shell.nix { inherit system nixpkgs; };
+          python = import ./python/shell.nix { inherit system nixpkgs edinix; };
 
           kernel = import ./kernel/shell.nix { inherit system nixpkgs; };
 

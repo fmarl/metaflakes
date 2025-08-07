@@ -1,7 +1,19 @@
 {
   description = "Python template flake";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
+    edinix = {
+      url = "github:fmarl/edinix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        extensions.follows = "nix-vscode-extensions";
+      };
+    };
+
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+  };
 
   outputs =
     {

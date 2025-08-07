@@ -1,12 +1,23 @@
-{ system, nixpkgs }:
+{
+  system,
+  nixpkgs,
+  edinix,
+}:
 let
   pkgs = import nixpkgs { inherit system; };
+  helix = edinix.helix.${system} {
+    profiles.python.enable = true;
+  };
+  
+  code = edinix.code.${system} {
+    profiles.nix.enable = true;
+    profiles.python.enable = true;
+  };
 in
 pkgs.mkShell {
-  buildInputs = with pkgs; [
-    nixfmt
-    nil
-    python3Full
-    pyright
+  buildInputs = [
+    helix.editor
+    code.editor
+    code.tooling
   ];
 }
